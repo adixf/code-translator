@@ -1,9 +1,13 @@
+import Main from './Main';
+import Menu from './Menu'
 
 function App() {
   return (
     <div>
-      hello world
+      <Menu></Menu>
+      <Main></Main>
     </div>
+   
   );
 }
 
