@@ -1,4 +1,4 @@
-import {AppBar, Toolbar, IconButton, Typography, Avatar, Divider} from '@mui/material';
+import {AppBar, Toolbar, IconButton, Typography, Avatar} from '@mui/material';
 import {Menu as MenuBook, AppsRounded} from '@mui/icons-material';
 import './menu.css'
 

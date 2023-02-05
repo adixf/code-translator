@@ -1,8 +1,10 @@
-import { Box, Paper, Grid, Divider, Input, TextField, Button, AppBar, Stack, Tabs, Tab } from "@mui/material"
+import { Box, Paper, Grid, Stack, Tabs, Tab, IconButton } from "@mui/material"
 import { useState } from "react"
+import {DoubleArrowRounded} from '@mui/icons-material';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import CodeEditor from '@uiw/react-textarea-code-editor';
+import LoadingButton from '@mui/lab/LoadingButton';
 import API from "./api"
 
 const Main = () => {
@@ -11,90 +13,100 @@ const Main = () => {
     const [languageTo, setLanguageTo] = useState('Javascript')
     const [input, setInput] = useState('')
     const [translation, setTranslation] = useState('translation')
+    const [loading, setLoading] = useState(false)
 
     const inputChanged = text => {
         setInput(text)
     }
 
-    const languageFromChanged = language => {
-        setLanguageFrom(language)
-    }
-
-    const translate = async text => {
-        const data = await API.translate(text, languageFrom, languageTo)
+    const translate = async () => {
+        setLoading(true)
+        const data = await API.translate(input, languageFrom, languageTo)
         setTranslation(data)
+        setLoading(false)
     }
 
 
     return (
-        <Grid container direction='column'>
-            <Grid item >
-                <Box height='8vh' sx={{backgroundColor: '#eeeee4'}}>
-                </Box>
-            </Grid>
-            <Grid paddingRight={10} paddingLeft={10}>
-                <Paper >
-                    <Grid container direction='column'>
-                        <Grid item xs={1}>
-                        <Tabs value={languageFrom} onChange={(e, lang) => languageFromChanged(lang)}>
-                            <Tab label='JAVA' value='Java'/>
-                            <Tab label='PYTHON' value='Python'/>
-                            <Tab  label='JAVASCRIPT' value='Javascript'/>
-                        </Tabs>           
-                        </Grid>
-                        <Grid item xs={11}>
-                            <Grid container direction='row'>
-                                <Grid item xs={6}>
-            
-                                    <CodeEditor
-                                        value={input}
-                                        onChange={e => inputChanged(e.target.value)}
-                                        padding={10}
-                                        language={languageFrom}
-                                        rows={6}
-                                        style={{
-                                            borderRadius: '8px',
-                                            overflowY: 'auto',
-                                            scrollBehavior: 'smooth',
-                                            height: '270px', maxHeight: '270px',
-                                            fontSize: 16,
-                                            borderStyle: 'initial',
-                                            borderColor: 'divider',
-                                            borderWidth: '1px',
-                                            backgroundColor: "#f5f5f5",
-                                            fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
-                                        }}
-                                    ></CodeEditor>
-                                    <Stack direction='row' alignItems='center'>
-                                        <Button 
-                                            variant='contained' 
-                                            onClick={e => translate(input)}
-                                        >TRANSLATE</Button>
-                                        <Button 
-                                            variant='contained' 
-                                            onClick={e => translate(input)}
-                                        >two</Button>
-                                    </Stack>
-                                   
-                                </Grid>
-                            
-                                <Grid item xs={6} sx={{backgroundColor:'white'}}>
-                                        <SyntaxHighlighter language={languageTo} style={atomOneDarkReasonable}
-                                        wrapLines showLineNumbers 
-                                        customStyle={{
-                                            height: '100%', maxHeight: '254px', 
-                                            borderRadius: '8px'}}
-                                        >
-                                            {translation}
-                                        </SyntaxHighlighter>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+        <Stack direction='column'>
+            <Box 
+                height='80px'
+                sx={{
+                    backgroundColor: '#eeeee4', 
+                    borderBottom: '1px solid lightgrey'                   
+                }}>            
+            </Box>
+
+            <Paper 
+                elevation={3}
+                sx={{borderRadius: '15px', marginLeft: 10, marginRight: 10, marginTop: -5, overflow: 'hidden'}}
+            >
+                <Grid container direction='row'>
+                    <Grid item xs={6}>
+                        <Stack direction='column' sx={{ height: '300px', maxHeight: '300px'}}>
+                            <Tabs 
+                                value={languageFrom} onChange={(e, lang) => setLanguageFrom(lang)}
+                                sx={{borderBottom: '1px solid lightgrey'}}
+                            >
+                                    <Tab label='JAVA' value='Java' sx={{ fontWeight: 'bold'}}/>
+                                    <Tab label='PYTHON' value='Python' sx={{ fontWeight: 'bold'}}/>
+                                    <Tab label='JAVASCRIPT' value='Javascript' sx={{ fontWeight: 'bold'}}/>
+                                    <Tab label="NATURAL LANGUAGE" value='Natural Language'  sx={{ fontWeight: 'bold'}}/>
+                            </Tabs>  
+                            <CodeEditor
+                                value={input}
+                                onChange={e => inputChanged(e.target.value)}
+                                padding={10}
+                                
+                                language={languageFrom}
+                                style={{                               
+                                    overflowY: 'auto',
+                                    height: '100%',
+                                    fontSize: 16,
+                                    borderRight: '1px solid lightgrey',                                  
+                                    backgroundColor: "#f5f5f5",
+                                    fontFamily: 'ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace',
+                                }}
+                            ></CodeEditor>
+                        </Stack>
                     </Grid>
-                </Paper>
+                    <Grid item xs={6}>
+                        <Stack direction='column'  sx={{ height: '300px', maxHeight: '300px'}}>
+                            <Tabs value={languageTo} onChange={(e, lang) => setLanguageTo(lang)}
+                                sx={{borderBottom: '1px solid lightgrey'}}
+                            >
+                                <Tab label='JAVA' value='Java' sx={{ fontWeight: 'bold'}}/>
+                                <Tab label='PYTHON' value='Python' sx={{ fontWeight: 'bold'}}/>
+                                <Tab  label='JAVASCRIPT' value='Javascript' sx={{ fontWeight: 'bold'}}/>
+                                
+                            </Tabs>  
+                            <SyntaxHighlighter language={languageTo} style={atomOneLight}
+                                wrapLongLines showLineNumbers 
+                                customStyle={{
+                                    height: '300px',
+                                    marginTop: '0',
+                                    marginBottom: '0'                                
+                                }}
+                                >
+                                    {translation}
+                            </SyntaxHighlighter>
+                        </Stack>
+                    </Grid>
+
             </Grid>
+            </Paper>
+            <LoadingButton 
+                loading={loading}
+                color="primary" 
+                variant='outlined'
+                sx={{marginLeft: 83, marginRight: 83, marginTop: 1}}
+                onClick={translate}
+                
+            >
+                <DoubleArrowRounded/>
+            </LoadingButton>
             
-        </Grid>     
+        </Stack>
     )
 }
 
