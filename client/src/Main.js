@@ -10,7 +10,7 @@ import API from "./api"
 const Main = () => {
 
     const [languageFrom, setLanguageFrom] = useState('Python')
-    const [languageTo, setLanguageTo] = useState('Javascript')
+    const [languageTo, setLanguageTo] = useState('Java')
     const [input, setInput] = useState('')
     const [translation, setTranslation] = useState('translation')
     const [loading, setLoading] = useState(false)
@@ -53,11 +53,11 @@ const Main = () => {
                                     <Tab label='JAVASCRIPT' value='Javascript' sx={{ fontWeight: 'bold'}}/>
                                     <Tab label="NATURAL LANGUAGE" value='Natural Language'  sx={{ fontWeight: 'bold'}}/>
                             </Tabs>  
+                            
                             <CodeEditor
                                 value={input}
                                 onChange={e => inputChanged(e.target.value)}
-                                padding={10}
-                                
+                                padding={15}           
                                 language={languageFrom}
                                 style={{                               
                                     overflowY: 'auto',
