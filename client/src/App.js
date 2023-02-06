@@ -1,5 +1,5 @@
 import Main from './Main';
-import Menu from './Menu';
+import Menu from './Menu/Menu';
 import './fonts/ProductSansBoldItalic.ttf'
 import { Stack } from '@mui/system';
 import {Box, CssBaseline, Divider} from '@mui/material'
