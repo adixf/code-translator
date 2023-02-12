@@ -1,13 +1,12 @@
 const { Configuration, OpenAIApi } = require("openai")
 
 const configuration = new Configuration({
-    apiKey: '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'
+    apiKey: process.env.OPENAI_KEY
 })
 
 const openai = new OpenAIApi(configuration)
 
 const translate = async (text, from, to) => {
-    console.log(text, from, to);
     const response = await openai.createCompletion({
         model: "text-davinci-003",
         prompt: `## Translate this code from ${from} to ${to}\n##${from}\n${text}\n##${to}\n`,

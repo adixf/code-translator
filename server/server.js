@@ -1,9 +1,11 @@
 const express = require('express')
 const translateRouter = require('./routes/translate')
 
-const PORT = 8082
+require('dotenv').config()
 
 const app = express()
+
+const PORT = process.env.PORT || 8080
 
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*")
