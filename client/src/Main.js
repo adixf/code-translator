@@ -21,11 +21,10 @@ const Main = () => {
 
     const translate = async () => {
         setLoading(true)
-        const data = await API.translate(input, languageFrom, languageTo)
-        setTranslation(data)
+        const {translation} = await API.translate(input, languageFrom, languageTo)
+        setTranslation(translation)
         setLoading(false)
     }
-
 
     return (
         <Stack direction='column'>
