@@ -7,17 +7,22 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration)
 
 const translate = async (text, from, to) => {
-    const response = await openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: `## Translate this code from ${from} to ${to}\n##${from}\n${text}\n##${to}\n`,
-        temperature: 0.7,
-        max_tokens: 256,
-        top_p: 1.0,
-        frequency_penalty: 0.0,
-        presence_penalty: 0.0
-    })
+    try {
+            const response = await openai.createCompletion({
+            model: "text-davinci-003",
+            prompt: `## Translate this code from ${from} to ${to}\n##${from}\n${text}\n##${to}\n`,
+            temperature: 0.7,
+            max_tokens: 256,
+            top_p: 1.0,
+            frequency_penalty: 0.0,
+            presence_penalty: 0.0
+        })
 
-    return response.data.choices[0].text
+        return response.data.choices[0].text
+    } catch(err) {
+        console.log(err)
+        throw new Error(err)
+    }
 } 
 
 const detectLanguage = text => {
